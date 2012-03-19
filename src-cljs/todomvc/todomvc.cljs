@@ -21,7 +21,6 @@
 (listen! (sel "#new-todo") :focus #(dom/set-style! (sel "#todoapp footer") :display "block"))
 (listen! (sel "#new-todo") :blur #(dom/set-style! (sel "#todoapp footer") :display "none"))
 
-(dom/set-text! (dom/by-id "todo-count") "3 todo items")
 
 (defn get-todos []
   (read-string (.getItem (.-localStorage js/window) "todo-clojurescript")))
@@ -39,4 +38,10 @@
 
 ;(save-todos ["task 1" "task 2"])
 
+(let [num-left (count (get-todos))]
+  (dom/set-text! (dom/by-id "todo-count") (str num-left " items left")))
+
 (listen! (sel "#new-todo-form") :submit #(add-todo (dom/value (sel "#new-todo"))))
+
+(listen! (sel ".view") :mouseover (toggle-display (sel "#destroy")))
+(listen! (sel ".view") :mouseover (toggle-display (sel "#edit")))
